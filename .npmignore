@@ -1,0 +1,38 @@
+# Development
+src
+example
+.github
+.vscode
+.idea
+
+# Configuration
+.eslintrc.js
+.prettierrc.js
+.gitignore
+.npmignore
+.cursorrules
+tsconfig.json
+tsconfig.build.json
+babel.config.js
+jest.config.js
+
+# Tests
+__tests__
+coverage
+
+# Build process
+.circleci
+.travis.yml
+
+# Logs
+*.log
+npm-debug.log*
+
+# Dependencies
+node_modules
+
+# Environment
+.env*
+
+# OS generated files
+.DS_Store 

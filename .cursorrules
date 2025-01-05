@@ -1,0 +1,16 @@
+{
+  "rules": [
+    {
+      "pattern": "src/**/*.{ts,tsx}",
+      "language": "typescript"
+    },
+    {
+      "pattern": "example/**/*.{ts,tsx}",
+      "language": "typescript"
+    },
+    {
+      "pattern": "*.json",
+      "language": "json"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+# OSX
+.DS_Store
+
+# Node
+node_modules
+npm-debug.log*
+.npm
+
+# Build
+lib/
+dist/
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Expo
+.expo
+__generated__
+
+# Test
+coverage/
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Example
+example/node_modules
+example/ios/Pods
+example/ios/build
+example/android/build
+example/android/app/build
