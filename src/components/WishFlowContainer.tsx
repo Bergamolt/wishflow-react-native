@@ -67,8 +67,8 @@ export const WishFlowContainer: React.FC<WishFlowContainerProps> = ({
     return (
       <View
         style={[
-          WishFlow.config.styles.WishFlowContainer.container,
-          WishFlow.config.styles.WishFlowContainer.centerContent,
+          WishFlow.config?.styles?.WishFlowContainer?.container,
+          WishFlow.config?.styles?.WishFlowContainer?.centerContent,
         ]}
       >
         <ActivityIndicator color={customTheme.primaryColor} size="large" />
@@ -77,21 +77,21 @@ export const WishFlowContainer: React.FC<WishFlowContainerProps> = ({
   }
 
   return (
-    <View style={WishFlow.config.styles.WishFlowContainer.container}>
-      <View style={WishFlow.config.styles.WishFlowContainer.tabBar}>
+    <View style={WishFlow.config?.styles?.WishFlowContainer?.container}>
+      <View style={WishFlow.config?.styles?.WishFlowContainer?.tabBar}>
         <Pressable
           style={[
-            WishFlow.config.styles.WishFlowContainer.tab,
+            WishFlow.config?.styles?.WishFlowContainer?.tab,
             activeTab === 'approved' &&
-              WishFlow.config.styles.WishFlowContainer.activeTab,
+              WishFlow.config?.styles?.WishFlowContainer?.activeTab,
           ]}
           onPress={() => setActiveTab('approved')}
         >
           <Text
             style={[
-              WishFlow.config.styles.WishFlowContainer.tabLabel,
+              WishFlow.config?.styles?.WishFlowContainer?.tabLabel,
               activeTab === 'approved' &&
-                WishFlow.config.styles.WishFlowContainer.activeTabLabel,
+                WishFlow.config?.styles?.WishFlowContainer?.activeTabLabel,
             ]}
           >
             Approved
@@ -99,17 +99,17 @@ export const WishFlowContainer: React.FC<WishFlowContainerProps> = ({
         </Pressable>
         <Pressable
           style={[
-            WishFlow.config.styles.WishFlowContainer.tab,
+            WishFlow.config?.styles?.WishFlowContainer?.tab,
             activeTab === 'implemented' &&
-              WishFlow.config.styles.WishFlowContainer.activeTab,
+              WishFlow.config?.styles?.WishFlowContainer?.activeTab,
           ]}
           onPress={() => setActiveTab('implemented')}
         >
           <Text
             style={[
-              WishFlow.config.styles.WishFlowContainer.tabLabel,
+              WishFlow.config?.styles?.WishFlowContainer?.tabLabel,
               activeTab === 'implemented' &&
-                WishFlow.config.styles.WishFlowContainer.activeTabLabel,
+                WishFlow.config?.styles?.WishFlowContainer?.activeTabLabel,
             ]}
           >
             Implemented
@@ -125,10 +125,10 @@ export const WishFlowContainer: React.FC<WishFlowContainerProps> = ({
       />
 
       <Pressable
-        style={WishFlow.config.styles.WishFlowContainer.addButton}
+        style={WishFlow.config?.styles?.WishFlowContainer?.addButton}
         onPress={() => setModalVisible(true)}
       >
-        <Text style={WishFlow.config.styles.WishFlowContainer.addButtonText}>
+        <Text style={WishFlow.config?.styles?.WishFlowContainer?.addButtonText}>
           +
         </Text>
       </Pressable>

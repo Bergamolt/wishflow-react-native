@@ -27,7 +27,7 @@ export type WishFlowConfig = {
   appId: string
   locale?: string
   userId?: string
-  styles: DefaultStyles
+  styles?: DefaultStyles
   customComponents?: {
     AddFeatureModal: {
       customInputComponent?: React.ReactNode

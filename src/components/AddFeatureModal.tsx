@@ -48,10 +48,10 @@ export const AddFeatureModal: React.FC<AddFeatureModalProps> = ({
     >
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={WishFlow.config.styles.AddFeatureModal.modalContainer}
+        style={WishFlow.config?.styles?.AddFeatureModal?.modalContainer}
       >
-        <View style={[WishFlow.config.styles.AddFeatureModal.content]}>
-          <Text style={WishFlow.config.styles.AddFeatureModal.title}>
+        <View style={[WishFlow.config?.styles?.AddFeatureModal?.content]}>
+          <Text style={WishFlow.config?.styles?.AddFeatureModal?.title}>
             Suggest an idea
           </Text>
 
@@ -59,7 +59,7 @@ export const AddFeatureModal: React.FC<AddFeatureModalProps> = ({
             ?.customInputComponent || (
             <>
               <TextInput
-                style={[WishFlow.config.styles.AddFeatureModal.input]}
+                style={[WishFlow.config?.styles?.AddFeatureModal?.input]}
                 placeholder="Title"
                 value={title}
                 onChangeText={setTitle}
@@ -67,8 +67,8 @@ export const AddFeatureModal: React.FC<AddFeatureModalProps> = ({
               />
               <TextInput
                 style={[
-                  WishFlow.config.styles.AddFeatureModal.input,
-                  WishFlow.config.styles.AddFeatureModal.textArea,
+                  WishFlow.config?.styles?.AddFeatureModal?.input,
+                  WishFlow.config?.styles?.AddFeatureModal?.textArea,
                 ]}
                 placeholder="Description"
                 value={description}
@@ -78,7 +78,7 @@ export const AddFeatureModal: React.FC<AddFeatureModalProps> = ({
                 maxLength={500}
               />
               <TextInput
-                style={[WishFlow.config.styles.AddFeatureModal.input]}
+                style={[WishFlow.config?.styles?.AddFeatureModal?.input]}
                 placeholder="Email (optional)"
                 value={email}
                 onChangeText={setEmail}
@@ -88,33 +88,35 @@ export const AddFeatureModal: React.FC<AddFeatureModalProps> = ({
             </>
           )}
 
-          <View style={WishFlow.config.styles.AddFeatureModal.buttons}>
+          <View style={WishFlow.config?.styles?.AddFeatureModal?.buttons}>
             {WishFlow.config?.customComponents?.AddFeatureModal
               ?.customButtonComponent || (
               <>
                 <Pressable
                   style={[
-                    WishFlow.config.styles.AddFeatureModal.button,
-                    WishFlow.config.styles.AddFeatureModal.cancelButton,
+                    WishFlow.config?.styles?.AddFeatureModal?.button,
+                    WishFlow.config?.styles?.AddFeatureModal?.cancelButton,
                   ]}
                   onPress={onClose}
                 >
                   <Text
-                    style={WishFlow.config.styles.AddFeatureModal.buttonText}
+                    style={WishFlow.config?.styles?.AddFeatureModal?.buttonText}
                   >
                     Cancel
                   </Text>
                 </Pressable>
                 <Pressable
                   style={[
-                    WishFlow.config.styles.AddFeatureModal.button,
-                    WishFlow.config.styles.AddFeatureModal.submitButton,
+                    WishFlow.config?.styles?.AddFeatureModal?.button,
+                    WishFlow.config?.styles?.AddFeatureModal?.submitButton,
                   ]}
                   onPress={handleSubmit}
                   disabled={!title.trim() || !description.trim()}
                 >
                   <Text
-                    style={[WishFlow.config.styles.AddFeatureModal.buttonText]}
+                    style={[
+                      WishFlow.config?.styles?.AddFeatureModal?.buttonText,
+                    ]}
                   >
                     Submit
                   </Text>

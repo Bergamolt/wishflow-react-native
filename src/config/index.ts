@@ -5,6 +5,7 @@ import { defaultStyles as defaultStylesAddFeatureModal } from '../components/Add
 import { defaultStyles as defaultStylesFeatureItem } from '../components/FeatureItem'
 import { defaultStyles as defaultStylesFeatureTab } from '../components/FeatureTab'
 import { defaultStyles as defaultStylesVoteButton } from '../components/VoteButton'
+import { deepMerge } from '../utils/deepMerge'
 
 const defaultStyles = {
   WishFlowContainer: defaultStylesContainer,
@@ -15,8 +16,8 @@ const defaultStyles = {
 }
 
 export type DefaultStyles = {
-  [key in keyof typeof defaultStyles]: {
-    [K in keyof (typeof defaultStyles)[key]]: ViewStyle | TextStyle | ImageStyle
+  [key in keyof typeof defaultStyles]?: {
+    [K in keyof (typeof defaultStyles)[key]]?: ViewStyle | TextStyle | ImageStyle
   }
 }
 
@@ -43,10 +44,7 @@ class WishFlowSingleton {
   public setConfig(config: WishFlowConfig): void {
     this._config = {
       ...config,
-      styles: {
-        ...defaultStyles,
-        ...config.styles,
-      },
+      styles: deepMerge(defaultStyles, config.styles), 
     }
   }
 

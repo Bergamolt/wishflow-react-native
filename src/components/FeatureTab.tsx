@@ -8,7 +8,7 @@ import { WishFlow } from '../config'
 export const FeatureTab: React.FC<FeatureTabProps> = ({ type, features, onVote, loading }) => {
   if (loading) {
     return (
-      <View style={[WishFlow.config.styles.FeatureTab.container, WishFlow.config.styles.FeatureTab.centerContent]}>
+      <View style={[WishFlow.config?.styles?.FeatureTab?.container, WishFlow.config?.styles?.FeatureTab?.centerContent]}>
         <ActivityIndicator color={THEME.PRIMARY_COLOR} size='large' />
       </View>
     )
@@ -16,9 +16,9 @@ export const FeatureTab: React.FC<FeatureTabProps> = ({ type, features, onVote, 
 
   if (features.length === 0) {
     return (
-      <View style={[WishFlow.config.styles.FeatureTab.container, WishFlow.config.styles.FeatureTab.centerContent]}>
-        <View style={[WishFlow.config.styles.FeatureTab.emptyStateContainer]}>
-          <Text style={[WishFlow.config.styles.FeatureTab.emptyStateText]}>
+      <View style={[WishFlow.config?.styles?.FeatureTab?.container, WishFlow.config?.styles?.FeatureTab?.centerContent]}>
+        <View style={[WishFlow.config?.styles?.FeatureTab?.emptyStateContainer]}>
+          <Text style={[WishFlow.config?.styles?.FeatureTab?.emptyStateText]}>
             {type === 'approved' ? 'No approved features' : 'No implemented features'}
           </Text>
         </View>
@@ -27,12 +27,12 @@ export const FeatureTab: React.FC<FeatureTabProps> = ({ type, features, onVote, 
   }
 
   return (
-    <View style={[WishFlow.config.styles.FeatureTab.container]}>
+    <View style={[WishFlow.config?.styles?.FeatureTab?.container]}>
       <FlatList
         data={features}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <FeatureItem feature={item} onVote={onVote} />}
-        contentContainerStyle={[WishFlow.config.styles.FeatureTab.listContainer]}
+        contentContainerStyle={[WishFlow.config?.styles?.FeatureTab?.listContainer]}
       />
     </View>
   )

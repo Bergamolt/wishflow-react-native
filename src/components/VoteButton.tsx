@@ -6,11 +6,11 @@ import { WishFlow } from '../config'
 
 export const VoteButton: React.FC<VoteButtonProps> = ({ votes, onPress }) => {
   return (
-    <Pressable style={[WishFlow.config.styles.VoteButton.container]} onPress={onPress}>
+    <Pressable style={[WishFlow.config?.styles?.VoteButton?.container]} onPress={onPress}>
       {WishFlow.config?.customComponents?.VoteButton?.customIcon || (
-        <Text style={[WishFlow.config.styles.VoteButton.icon]}>👍</Text>
+        <Text style={[WishFlow.config?.styles?.VoteButton?.icon]}>👍</Text>
       )}
-      <Text style={[WishFlow.config.styles.VoteButton.text]}>{votes}</Text>
+      <Text style={[WishFlow.config?.styles?.VoteButton?.text]}>{votes}</Text>
     </Pressable>
   )
 }
