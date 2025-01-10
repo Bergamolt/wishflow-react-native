@@ -1,6 +1,6 @@
 {
-  "name": "react-native-wishflow",
-  "version": "0.0.2",
+  "name": "wishflow-react-native",
+  "version": "0.0.1",
   "description": "A feature request and feedback management system for React Native applications",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
