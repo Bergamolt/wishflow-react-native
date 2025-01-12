@@ -1,16 +1,16 @@
-{
-  "rules": [
-    {
-      "pattern": "src/**/*.{ts,tsx}",
-      "language": "typescript"
-    },
-    {
-      "pattern": "example/**/*.{ts,tsx}",
-      "language": "typescript"
-    },
-    {
-      "pattern": "*.json",
-      "language": "json"
-    }
-  ]
-}
+### About project
+Wishflow React Native - this is a react native library for Wishflow
+WishFlow - this is in-app feedback and feature request management system
+
+### Project structure
+- src/ - source code
+-- components/ - react native components
+-- config/ - configuration
+-- constants/ - constants
+-- hooks/ - react native hooks
+-- types/ - typescript types
+-- utils/ - utility functions
+-- index.ts - entry point
+- example/ - example project not used in production (for testing purposes)
+- lib/ - build output
+- package.json - project configuration

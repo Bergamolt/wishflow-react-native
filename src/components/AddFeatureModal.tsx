@@ -1,29 +1,16 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Pressable,
-  Modal,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
-import { AddFeatureModalProps } from '../types';
-import { THEME } from '../constants';
-import { DEFAULT_LOCALE, WishFlow } from '../config';
+import React, { useState } from 'react'
+import { View, Text, TextInput, Pressable, Modal, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
+import { AddFeatureModalProps } from '../types'
+import { THEME } from '../constants'
+import { DEFAULT_LOCALE, WishFlow } from '../config'
 
-export const AddFeatureModal: React.FC<AddFeatureModalProps> = ({
-  isVisible,
-  onClose,
-  onSubmit,
-}) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [email, setEmail] = useState('');
+export const AddFeatureModal: React.FC<AddFeatureModalProps> = ({ isVisible, onClose, onSubmit }) => {
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [email, setEmail] = useState('')
 
   const handleSubmit = () => {
-    if (!title.trim() || !description.trim()) return;
+    if (!title.trim() || !description.trim()) return
 
     onSubmit({
       title: title.trim(),
@@ -31,104 +18,75 @@ export const AddFeatureModal: React.FC<AddFeatureModalProps> = ({
       email: email.trim() || undefined,
       locale: WishFlow.config.locale || DEFAULT_LOCALE,
       userId: WishFlow.config.userId || '',
-    });
+    })
 
-    setTitle('');
-    setDescription('');
-    setEmail('');
-    onClose();
-  };
+    setTitle('')
+    setDescription('')
+    setEmail('')
+    onClose()
+  }
 
   return (
-    <Modal
-      visible={isVisible}
-      animationType="slide"
-      transparent
-      onRequestClose={onClose}
-    >
+    <Modal visible={isVisible} animationType='slide' transparent onRequestClose={onClose}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={WishFlow.config?.styles?.AddFeatureModal?.modalContainer}
-      >
+        style={WishFlow.config?.styles?.AddFeatureModal?.modalContainer}>
         <View style={[WishFlow.config?.styles?.AddFeatureModal?.content]}>
-          <Text style={WishFlow.config?.styles?.AddFeatureModal?.title}>
-            Suggest an idea
-          </Text>
-
-          {WishFlow.config?.customComponents?.AddFeatureModal
-            ?.customInputComponent || (
-            <>
-              <TextInput
-                style={[WishFlow.config?.styles?.AddFeatureModal?.input]}
-                placeholder="Title"
-                value={title}
-                onChangeText={setTitle}
-                maxLength={100}
-              />
-              <TextInput
-                style={[
-                  WishFlow.config?.styles?.AddFeatureModal?.input,
-                  WishFlow.config?.styles?.AddFeatureModal?.textArea,
-                ]}
-                placeholder="Description"
-                value={description}
-                onChangeText={setDescription}
-                multiline
-                numberOfLines={4}
-                maxLength={500}
-              />
-              <TextInput
-                style={[WishFlow.config?.styles?.AddFeatureModal?.input]}
-                placeholder="Email (optional)"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-              />
-            </>
-          )}
+          <Text style={WishFlow.config?.styles?.AddFeatureModal?.title}>Suggest an idea</Text>
+          <>
+            <TextInput
+              style={[WishFlow.config?.styles?.AddFeatureModal?.input]}
+              placeholder='Title'
+              value={title}
+              onChangeText={setTitle}
+              maxLength={100}
+            />
+            <TextInput
+              style={[
+                WishFlow.config?.styles?.AddFeatureModal?.input,
+                WishFlow.config?.styles?.AddFeatureModal?.textArea,
+              ]}
+              placeholder='Description'
+              value={description}
+              onChangeText={setDescription}
+              multiline
+              numberOfLines={4}
+              maxLength={500}
+            />
+            <TextInput
+              style={[WishFlow.config?.styles?.AddFeatureModal?.input]}
+              placeholder='Email (optional)'
+              value={email}
+              onChangeText={setEmail}
+              keyboardType='email-address'
+              autoCapitalize='none'
+            />
+          </>
 
           <View style={WishFlow.config?.styles?.AddFeatureModal?.buttons}>
-            {WishFlow.config?.customComponents?.AddFeatureModal
-              ?.customButtonComponent || (
-              <>
-                <Pressable
-                  style={[
-                    WishFlow.config?.styles?.AddFeatureModal?.button,
-                    WishFlow.config?.styles?.AddFeatureModal?.cancelButton,
-                  ]}
-                  onPress={onClose}
-                >
-                  <Text
-                    style={WishFlow.config?.styles?.AddFeatureModal?.buttonText}
-                  >
-                    Cancel
-                  </Text>
-                </Pressable>
-                <Pressable
-                  style={[
-                    WishFlow.config?.styles?.AddFeatureModal?.button,
-                    WishFlow.config?.styles?.AddFeatureModal?.submitButton,
-                  ]}
-                  onPress={handleSubmit}
-                  disabled={!title.trim() || !description.trim()}
-                >
-                  <Text
-                    style={[
-                      WishFlow.config?.styles?.AddFeatureModal?.buttonText,
-                    ]}
-                  >
-                    Submit
-                  </Text>
-                </Pressable>
-              </>
-            )}
+            <Pressable
+              style={[
+                WishFlow.config?.styles?.AddFeatureModal?.button,
+                WishFlow.config?.styles?.AddFeatureModal?.cancelButton,
+              ]}
+              onPress={onClose}>
+              <Text style={WishFlow.config?.styles?.AddFeatureModal?.buttonText}>Cancel</Text>
+            </Pressable>
+            <Pressable
+              style={[
+                WishFlow.config?.styles?.AddFeatureModal?.button,
+                WishFlow.config?.styles?.AddFeatureModal?.submitButton,
+              ]}
+              onPress={handleSubmit}
+              disabled={!title.trim() || !description.trim()}>
+              <Text style={[WishFlow.config?.styles?.AddFeatureModal?.buttonText]}>Submit</Text>
+            </Pressable>
           </View>
         </View>
       </KeyboardAvoidingView>
     </Modal>
-  );
-};
+  )
+}
 
 export const defaultStyles = StyleSheet.create({
   modalContainer: {
@@ -193,4 +151,4 @@ export const defaultStyles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
   },
-});
+})

@@ -44,7 +44,7 @@ class WishFlowSingleton {
   public setConfig(config: WishFlowConfig): void {
     this._config = {
       ...config,
-      styles: deepMerge(defaultStyles, config.styles), 
+      styles: deepMerge(defaultStyles, config.styles),
     }
   }
 

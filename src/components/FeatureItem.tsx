@@ -13,30 +13,15 @@ export const FeatureItem: React.FC<FeatureItemProps> = ({ feature, onVote }) => 
   return (
     <View style={[WishFlow.config?.styles?.FeatureItem?.container]}>
       <View style={WishFlow.config?.styles?.FeatureItem?.content}>
-        <Text style={[WishFlow.config?.styles?.FeatureItem?.title]}>
-          {feature.title}
-        </Text>
-        <Text style={[WishFlow.config?.styles?.FeatureItem?.description]}>
-          {feature.description}
-        </Text>
+        <Text style={[WishFlow.config?.styles?.FeatureItem?.title]}>{feature.title}</Text>
+        <Text style={[WishFlow.config?.styles?.FeatureItem?.description]}>{feature.description}</Text>
         {/* status */}
-        <View
-          style={[
-            WishFlow.config?.styles?.FeatureItem?.status,
-            {backgroundColor: statusColors[feature.status]},
-          ]}
-        >
-          <Text style={[WishFlow.config?.styles?.FeatureItem?.statusText]}>
-            {feature.status}
-          </Text>
+        <View style={[WishFlow.config?.styles?.FeatureItem?.status, { backgroundColor: statusColors[feature.status] }]}>
+          <Text style={[WishFlow.config?.styles?.FeatureItem?.statusText]}>{feature.status}</Text>
         </View>
       </View>
       <View style={[WishFlow.config?.styles?.FeatureItem?.votesContainer]}>
-        {WishFlow.config?.customComponents?.FeatureItem?.renderCustomVoteButton ? (
-          WishFlow.config?.customComponents?.FeatureItem?.renderCustomVoteButton(feature, handleVote)
-        ) : (
-          <VoteButton votes={feature.votes} onPress={handleVote} />
-        )}
+        <VoteButton votes={feature.votes} onPress={handleVote} />
       </View>
     </View>
   )

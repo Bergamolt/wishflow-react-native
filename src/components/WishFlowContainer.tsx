@@ -1,67 +1,54 @@
-import React, { useState } from 'react';
-import {
-  View,
-  StyleSheet,
-  Pressable,
-  Text,
-  ActivityIndicator,
-} from 'react-native';
-import { WishFlowContainerProps, Feature, FeatureStatus } from '../types';
-import { FeatureTab } from './FeatureTab';
-import { AddFeatureModal } from './AddFeatureModal';
-import { useWishFlow } from '../hooks/useWishFlow';
-import { THEME } from '../constants';
-import { WishFlow } from '../config';
+import React, { useState } from 'react'
+import { View, StyleSheet, Pressable, Text, ActivityIndicator } from 'react-native'
+import { WishFlowContainerProps, Feature, FeatureStatus } from '../types'
+import { FeatureTab } from './FeatureTab'
+import { AddFeatureModal } from './AddFeatureModal'
+import { useWishFlow } from '../hooks/useWishFlow'
+import { THEME } from '../constants'
+import { WishFlow } from '../config'
 
-type TabType = 'approved' | 'implemented';
+type TabType = 'approved' | 'implemented'
 
 const getTabType = (status: FeatureStatus): TabType => {
   if (status === FeatureStatus.COMPLETED) {
-    return 'implemented';
+    return 'implemented'
   }
 
-  return 'approved';
-};
+  return 'approved'
+}
 
-export const WishFlowContainer: React.FC<WishFlowContainerProps> = ({
-  theme,
-}) => {
-  const [activeTab, setActiveTab] = useState<TabType>('approved');
-  const [isModalVisible, setModalVisible] = useState(false);
+export const WishFlowContainer: React.FC<WishFlowContainerProps> = ({ theme }) => {
+  const [activeTab, setActiveTab] = useState<TabType>('approved')
+  const [isModalVisible, setModalVisible] = useState(false)
 
-  const { features, loading, addFeature, vote } = useWishFlow();
+  const { features, loading, addFeature, vote } = useWishFlow()
 
   const filteredFeatures = features.filter((feature) => {
-    const tabStatus = getTabType(feature.status);
-    const ownFeature = feature.userId === WishFlow.config.userId;
+    const tabStatus = getTabType(feature.status)
+    const ownFeature = feature.userId === WishFlow.config.userId
 
     if (tabStatus === 'implemented' && !ownFeature) {
-      return true;
+      return true
     }
 
-    return tabStatus === activeTab || ownFeature;
-  });
+    return tabStatus === activeTab || ownFeature
+  })
 
-  const handleAddFeature = async (
-    feature: Omit<
-      Feature,
-      'id' | 'status' | 'votes' | 'createdAt' | 'updatedAt'
-    >
-  ) => {
+  const handleAddFeature = async (feature: Omit<Feature, 'id' | 'status' | 'votes' | 'createdAt' | 'updatedAt'>) => {
     try {
-      await addFeature(feature);
-      setModalVisible(false);
+      await addFeature(feature)
+      setModalVisible(false)
     } catch (error) {
-      console.error('Error adding feature:', error);
+      console.error('Error adding feature:', error)
       // TODO: Add error handling
     }
-  };
+  }
 
   const customTheme = {
     primaryColor: theme?.primaryColor || THEME.PRIMARY_COLOR,
     backgroundColor: theme?.backgroundColor || THEME.BACKGROUND_COLOR,
     textColor: theme?.textColor || THEME.TEXT_COLOR,
-  };
+  }
 
   if (loading) {
     return (
@@ -69,11 +56,10 @@ export const WishFlowContainer: React.FC<WishFlowContainerProps> = ({
         style={[
           WishFlow.config?.styles?.WishFlowContainer?.container,
           WishFlow.config?.styles?.WishFlowContainer?.centerContent,
-        ]}
-      >
-        <ActivityIndicator color={customTheme.primaryColor} size="large" />
+        ]}>
+        <ActivityIndicator color={customTheme.primaryColor} size='large' />
       </View>
-    );
+    )
   }
 
   return (
@@ -82,65 +68,43 @@ export const WishFlowContainer: React.FC<WishFlowContainerProps> = ({
         <Pressable
           style={[
             WishFlow.config?.styles?.WishFlowContainer?.tab,
-            activeTab === 'approved' &&
-              WishFlow.config?.styles?.WishFlowContainer?.activeTab,
+            activeTab === 'approved' && WishFlow.config?.styles?.WishFlowContainer?.activeTab,
           ]}
-          onPress={() => setActiveTab('approved')}
-        >
+          onPress={() => setActiveTab('approved')}>
           <Text
             style={[
               WishFlow.config?.styles?.WishFlowContainer?.tabLabel,
-              activeTab === 'approved' &&
-                WishFlow.config?.styles?.WishFlowContainer?.activeTabLabel,
-            ]}
-          >
+              activeTab === 'approved' && WishFlow.config?.styles?.WishFlowContainer?.activeTabLabel,
+            ]}>
             Approved
           </Text>
         </Pressable>
         <Pressable
           style={[
             WishFlow.config?.styles?.WishFlowContainer?.tab,
-            activeTab === 'implemented' &&
-              WishFlow.config?.styles?.WishFlowContainer?.activeTab,
+            activeTab === 'implemented' && WishFlow.config?.styles?.WishFlowContainer?.activeTab,
           ]}
-          onPress={() => setActiveTab('implemented')}
-        >
+          onPress={() => setActiveTab('implemented')}>
           <Text
             style={[
               WishFlow.config?.styles?.WishFlowContainer?.tabLabel,
-              activeTab === 'implemented' &&
-                WishFlow.config?.styles?.WishFlowContainer?.activeTabLabel,
-            ]}
-          >
+              activeTab === 'implemented' && WishFlow.config?.styles?.WishFlowContainer?.activeTabLabel,
+            ]}>
             Implemented
           </Text>
         </Pressable>
       </View>
 
-      <FeatureTab
-        type={activeTab}
-        features={filteredFeatures}
-        loading={loading}
-        onVote={vote}
-      />
+      <FeatureTab type={activeTab} features={filteredFeatures} loading={loading} onVote={vote} />
 
-      <Pressable
-        style={WishFlow.config?.styles?.WishFlowContainer?.addButton}
-        onPress={() => setModalVisible(true)}
-      >
-        <Text style={WishFlow.config?.styles?.WishFlowContainer?.addButtonText}>
-          +
-        </Text>
+      <Pressable style={WishFlow.config?.styles?.WishFlowContainer?.addButton} onPress={() => setModalVisible(true)}>
+        <Text style={WishFlow.config?.styles?.WishFlowContainer?.addButtonText}>+</Text>
       </Pressable>
 
-      <AddFeatureModal
-        isVisible={isModalVisible}
-        onClose={() => setModalVisible(false)}
-        onSubmit={handleAddFeature}
-      />
+      <AddFeatureModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} onSubmit={handleAddFeature} />
     </View>
-  );
-};
+  )
+}
 
 export const defaultStyles = StyleSheet.create({
   container: {
@@ -201,4 +165,4 @@ export const defaultStyles = StyleSheet.create({
     color: THEME.BACKGROUND_COLOR,
     marginTop: -2,
   },
-});
+})

@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react'
 import { Feature } from '../types'
-import { fetchFeatures, createFeature, voteFeature } from '../utils/api'
+import { fetchFeatures, createFeature, voteFeature } from '../api'
 import { DEFAULT_LOCALE, WishFlow } from '../config'
 
 export const useWishFlow = () => {

@@ -29,13 +29,6 @@ export type WishFlowConfig = {
   userId?: string
   styles?: DefaultStyles
   customComponents?: {
-    AddFeatureModal: {
-      customInputComponent?: React.ReactNode
-      customButtonComponent?: React.ReactNode
-    }
-    FeatureItem: {
-      renderCustomVoteButton?: (feature: Feature, onVote: (featureId: string) => void) => React.ReactNode
-    }
     VoteButton: {
       customIcon?: React.ReactNode
     }

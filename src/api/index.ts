@@ -4,7 +4,7 @@ import { WishFlow } from '../config'
 
 const getHeaders = () => {
   const { secretKey, appId } = WishFlow.config
-  
+
   return {
     'Content-Type': 'application/json',
     'x-app-secret-key': secretKey,

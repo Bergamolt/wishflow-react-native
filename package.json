@@ -22,7 +22,8 @@
     "prepare": "bob build",
     "release": "release-it",
     "example": "cd example && npm install && npm run start",
-    "bootstrap": "npm run example && npm install"
+    "bootstrap": "npm run example && npm install",
+    "format": "prettier --write ."
   },
   "keywords": [
     "react-native",
@@ -124,13 +125,6 @@
     "node_modules/",
     "lib/"
   ],
-  "prettier": {
-    "quoteProps": "consistent",
-    "singleQuote": true,
-    "tabWidth": 2,
-    "trailingComma": "es5",
-    "useTabs": false
-  },
   "react-native-builder-bob": {
     "source": "src",
     "output": "lib",
