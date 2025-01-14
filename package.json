@@ -38,7 +38,7 @@
     "type": "git",
     "url": "git+https://github.com/Bergamolt/react-native-wishflow.git"
   },
-  "author": "Bergamolt <hello@bergamolt.com>",
+  "author": "Valerii Khoma",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Bergamolt/react-native-wishflow/issues"

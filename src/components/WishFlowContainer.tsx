@@ -108,32 +108,6 @@ export const defaultStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  tabBar: {
-    flexDirection: 'row',
-    backgroundColor: THEME.BACKGROUND_COLOR,
-    paddingHorizontal: 16,
-    paddingTop: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  tab: {
-    flex: 1,
-    paddingVertical: 12,
-    alignItems: 'center',
-  },
-  activeTab: {
-    borderBottomWidth: 2,
-    borderBottomColor: THEME.PRIMARY_COLOR,
-  },
-  tabLabel: {
-    fontSize: 16,
-    color: THEME.TEXT_COLOR,
-    opacity: 0.7,
-  },
-  activeTabLabel: {
-    opacity: 1,
-    fontWeight: '600',
-  },
   addButton: {
     position: 'absolute',
     right: 16,
