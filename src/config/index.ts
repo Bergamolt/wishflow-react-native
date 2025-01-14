@@ -3,7 +3,7 @@ import { WishFlowConfig } from '../types'
 import { defaultStyles as defaultStylesContainer } from '../components/WishFlowContainer'
 import { defaultStyles as defaultStylesAddFeatureModal } from '../components/AddFeatureModal'
 import { defaultStyles as defaultStylesFeatureItem } from '../components/FeatureItem'
-import { defaultStyles as defaultStylesFeatureTab } from '../components/FeatureTab'
+import { defaultStyles as defaultStylesFeatureList } from '../components/FeatureList'
 import { defaultStyles as defaultStylesVoteButton } from '../components/VoteButton'
 import { deepMerge } from '../utils/deepMerge'
 
@@ -11,7 +11,7 @@ const defaultStyles = {
   WishFlowContainer: defaultStylesContainer,
   AddFeatureModal: defaultStylesAddFeatureModal,
   FeatureItem: defaultStylesFeatureItem,
-  FeatureTab: defaultStylesFeatureTab,
+  FeatureList: defaultStylesFeatureList,
   VoteButton: defaultStylesVoteButton,
 }
 
@@ -27,7 +27,9 @@ class WishFlowSingleton {
     secretKey: '',
     appId: '',
     locale: DEFAULT_LOCALE,
-    userId: undefined,
+    userInfo: {
+      userId: undefined,
+    },
     styles: defaultStyles as DefaultStyles,
   }
 

@@ -30,7 +30,6 @@ export const fetchFeatures = async (locale: string): Promise<Feature[]> => {
 export const createFeature = async (
   feature: Omit<Feature, 'id' | 'status' | 'votes' | 'createdAt' | 'updatedAt'>,
 ): Promise<Feature> => {
-  console.log('createFeature', feature)
   const response = await fetch(`${API_BASE_URL}/features/create`, {
     method: 'POST',
     headers: getHeaders(),
@@ -47,12 +46,21 @@ export const createFeature = async (
 }
 
 export const voteFeature = async (featureId: string): Promise<void> => {
-  const response = await fetch(`${API_BASE_URL}/features/${featureId}/vote`, {
-    method: 'POST',
-    headers: getHeaders(),
-  })
+  try {
+    const response = await fetch(`${API_BASE_URL}/features/${featureId}/vote`, {
+      method: 'POST',
+      headers: {
+        ...getHeaders(),
+        ...(WishFlow.config.userInfo?.userId && { 'x-user-id': WishFlow.config.userInfo?.userId }),
+      },
+    })
 
-  if (!response.ok) {
-    throw new Error('Failed to vote for feature')
+    if (response.status !== 200) {
+      const data = await response.json()
+
+      console.log(data.error)
+    }
+  } catch (error) {
+    console.log(error)
   }
 }

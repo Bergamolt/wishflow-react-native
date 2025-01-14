@@ -1,9 +1,12 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import { FeatureItemProps, FeatureStatus } from '../types'
+import { FeatureItemProps } from '../types'
 import { VoteButton } from './VoteButton'
-import { THEME } from '../constants'
+import { STATUS_TEXT, statusColors, THEME } from '../constants'
 import { WishFlow } from '../config'
+import { truncate } from '../utils/truncate'
+
+const MAX_DESCRIPTION_LENGTH = 35
 
 export const FeatureItem: React.FC<FeatureItemProps> = ({ feature, onVote }) => {
   const handleVote = () => {
@@ -14,10 +17,11 @@ export const FeatureItem: React.FC<FeatureItemProps> = ({ feature, onVote }) => 
     <View style={[WishFlow.config?.styles?.FeatureItem?.container]}>
       <View style={WishFlow.config?.styles?.FeatureItem?.content}>
         <Text style={[WishFlow.config?.styles?.FeatureItem?.title]}>{feature.title}</Text>
-        <Text style={[WishFlow.config?.styles?.FeatureItem?.description]}>{feature.description}</Text>
-        {/* status */}
+        <Text style={[WishFlow.config?.styles?.FeatureItem?.description]}>
+          {truncate(feature.description, MAX_DESCRIPTION_LENGTH)}
+        </Text>
         <View style={[WishFlow.config?.styles?.FeatureItem?.status, { backgroundColor: statusColors[feature.status] }]}>
-          <Text style={[WishFlow.config?.styles?.FeatureItem?.statusText]}>{feature.status}</Text>
+          <Text style={[WishFlow.config?.styles?.FeatureItem?.statusText]}>{STATUS_TEXT[feature.status]}</Text>
         </View>
       </View>
       <View style={[WishFlow.config?.styles?.FeatureItem?.votesContainer]}>
@@ -25,15 +29,6 @@ export const FeatureItem: React.FC<FeatureItemProps> = ({ feature, onVote }) => 
       </View>
     </View>
   )
-}
-
-export const statusColors = {
-  [FeatureStatus.PENDING]: '#FFA500',
-  [FeatureStatus.IN_REVIEW]: '#008000',
-  [FeatureStatus.PLANNED]: '#0000FF',
-  [FeatureStatus.IN_PROGRESS]: '#FFA500',
-  [FeatureStatus.COMPLETED]: '#008000',
-  [FeatureStatus.REJECTED]: '#FF0000',
 }
 
 export const defaultStyles = StyleSheet.create({

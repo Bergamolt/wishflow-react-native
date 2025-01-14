@@ -26,7 +26,9 @@ export type WishFlowConfig = {
   secretKey: string
   appId: string
   locale?: string
-  userId?: string
+  userInfo?: {
+    userId?: string
+  }
   styles?: DefaultStyles
   customComponents?: {
     VoteButton: {
@@ -43,11 +45,11 @@ export type WishFlowContainerProps = {
   }
 }
 
-export type FeatureTabProps = {
-  type: 'approved' | 'implemented'
+export type FeatureListProps = {
+  status: FeatureStatus | 'ALL'
   features: Feature[]
-  loading?: boolean
-  onVote: (featureId: string) => void
+  loading: boolean
+  onVote: (featureId: string) => Promise<void>
 }
 
 export type FeatureItemProps = {

@@ -1,4 +1,4 @@
-import { FeatureStatus } from 'src/types'
+import { FeatureStatus } from '../types'
 
 export const API_BASE_URL = 'http://localhost:3000/api'
 
@@ -19,4 +19,14 @@ export const THEME = {
   PRIMARY_COLOR: '#007AFF',
   BACKGROUND_COLOR: '#FFFFFF',
   TEXT_COLOR: '#000000',
+}
+
+export const STATUS_TEXT = {
+  ALL: 'All',
+  [FeatureStatus.PENDING]: 'Pending',
+  [FeatureStatus.IN_REVIEW]: 'In Review',
+  [FeatureStatus.PLANNED]: 'Planned',
+  [FeatureStatus.IN_PROGRESS]: 'In Progress',
+  [FeatureStatus.COMPLETED]: 'Completed',
+  [FeatureStatus.REJECTED]: 'Rejected',
 }

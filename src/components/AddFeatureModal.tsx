@@ -17,7 +17,7 @@ export const AddFeatureModal: React.FC<AddFeatureModalProps> = ({ isVisible, onC
       description: description.trim(),
       email: email.trim() || undefined,
       locale: WishFlow.config.locale || DEFAULT_LOCALE,
-      userId: WishFlow.config.userId || '',
+      userId: WishFlow.config.userInfo?.userId || '',
     })
 
     setTitle('')
@@ -32,7 +32,6 @@ export const AddFeatureModal: React.FC<AddFeatureModalProps> = ({ isVisible, onC
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={WishFlow.config?.styles?.AddFeatureModal?.modalContainer}>
         <View style={[WishFlow.config?.styles?.AddFeatureModal?.content]}>
-          <Text style={WishFlow.config?.styles?.AddFeatureModal?.title}>Suggest an idea</Text>
           <>
             <TextInput
               style={[WishFlow.config?.styles?.AddFeatureModal?.input]}
@@ -70,7 +69,13 @@ export const AddFeatureModal: React.FC<AddFeatureModalProps> = ({ isVisible, onC
                 WishFlow.config?.styles?.AddFeatureModal?.cancelButton,
               ]}
               onPress={onClose}>
-              <Text style={WishFlow.config?.styles?.AddFeatureModal?.buttonText}>Cancel</Text>
+              <Text
+                style={[
+                  WishFlow.config?.styles?.AddFeatureModal?.buttonText,
+                  WishFlow.config?.styles?.AddFeatureModal?.cancelButtonText,
+                ]}>
+                Cancel
+              </Text>
             </Pressable>
             <Pressable
               style={[
@@ -108,13 +113,6 @@ export const defaultStyles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: THEME.TEXT_COLOR,
-    marginBottom: 20,
-    textAlign: 'center',
-  },
   input: {
     borderWidth: 1,
     borderColor: '#ddd',
@@ -141,6 +139,9 @@ export const defaultStyles = StyleSheet.create({
   },
   cancelButton: {
     backgroundColor: '#ddd',
+  },
+  cancelButtonText: {
+    color: '#FF0000',
   },
   submitButton: {
     backgroundColor: THEME.PRIMARY_COLOR,
