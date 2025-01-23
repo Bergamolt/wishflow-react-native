@@ -1,6 +1,6 @@
 import { FeatureStatus } from '../types'
 
-export const API_BASE_URL = 'https://wishflow.vercel.app/api'
+export const API_BASE_URL = __DEV__ ? 'http://localhost:3000/api' : 'https://wishflow.vercel.app/api'
 
 export const STORAGE_KEYS = {
   VOTED_FEATURES: '@wishflow/voted_features',
@@ -13,12 +13,6 @@ export const statusColors = {
   [FeatureStatus.IN_PROGRESS]: '#FFA500',
   [FeatureStatus.COMPLETED]: '#008000',
   [FeatureStatus.REJECTED]: '#FF0000',
-}
-
-export const THEME = {
-  PRIMARY_COLOR: '#007AFF',
-  BACKGROUND_COLOR: '#FFFFFF',
-  TEXT_COLOR: '#000000',
 }
 
 export const STATUS_TEXT = {

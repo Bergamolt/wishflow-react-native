@@ -1,37 +1,68 @@
 import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
-import { WishFlowConfig } from '../types'
-import { defaultStyles as defaultStylesContainer } from '../components/WishFlowContainer'
-import { defaultStyles as defaultStylesAddFeatureModal } from '../components/AddFeatureModal'
-import { defaultStyles as defaultStylesFeatureItem } from '../components/FeatureItem'
-import { defaultStyles as defaultStylesFeatureList } from '../components/FeatureList'
-import { defaultStyles as defaultStylesVoteButton } from '../components/VoteButton'
+import { FeatureStatus, WishFlowConfig, SetWishFlowConfig, Theme } from '../types'
+import { createWishFlowContainerStyles } from '../components/WishFlowContainer'
+import { createAddFeatureModalStyles } from '../components/AddFeatureModal'
+import { createFeatureItemStyles } from '../components/FeatureItem'
+import { createFeatureListStyles } from '../components/FeatureList'
+import { createVoteButtonStyles } from '../components/VoteButton'
 import { deepMerge } from '../utils/deepMerge'
 
-const defaultStyles = {
-  WishFlowContainer: defaultStylesContainer,
-  AddFeatureModal: defaultStylesAddFeatureModal,
-  FeatureItem: defaultStylesFeatureItem,
-  FeatureList: defaultStylesFeatureList,
-  VoteButton: defaultStylesVoteButton,
+export const createDefaultStyles = (theme: Theme) => {
+  return {
+    WishFlowContainer: createWishFlowContainerStyles(theme),
+    AddFeatureModal: createAddFeatureModalStyles(theme),
+    FeatureItem: createFeatureItemStyles(theme),
+    FeatureList: createFeatureListStyles(theme),
+    VoteButton: createVoteButtonStyles(theme),
+  }
 }
 
 export type DefaultStyles = {
-  [key in keyof typeof defaultStyles]?: {
-    [K in keyof (typeof defaultStyles)[key]]?: ViewStyle | TextStyle | ImageStyle
+  [key in keyof ReturnType<typeof createDefaultStyles>]?: {
+    [K in keyof ReturnType<typeof createDefaultStyles>[key]]?: ViewStyle | TextStyle | ImageStyle
   }
+}
+
+export const DEFAULT_LOCALE = 'en'
+
+const defaultStatusColors = {
+  [FeatureStatus.PENDING]: '#FFA500',
+  [FeatureStatus.IN_REVIEW]: '#008000',
+  [FeatureStatus.PLANNED]: '#0000FF',
+  [FeatureStatus.IN_PROGRESS]: '#FFA500',
+  [FeatureStatus.COMPLETED]: '#008000',
+  [FeatureStatus.REJECTED]: '#FF0000',
+}
+
+const defaultTheme: Theme = {
+  background: '#FFFFFF',
+  text: '#000000',
+  primary: '#007AFF',
+  secondary: '#FF3B30',
+  success: '#34C759',
+  error: '#FF3B30',
+  warning: '#FF9500',
+  card: '#F7F7F7',
+  border: '#E0E0E0',
+  shadow: '#000000',
+  overlay: 'rgba(0, 0, 0, 0.5)',
+}
+
+export const initialConfig: WishFlowConfig = {
+  secretKey: '',
+  appId: '',
+  locale: DEFAULT_LOCALE,
+  userInfo: {
+    userId: undefined,
+  },
+  styles: createDefaultStyles(defaultTheme),
+  statusColors: defaultStatusColors,
+  theme: defaultTheme,
 }
 
 class WishFlowSingleton {
   private static _instance: WishFlowSingleton
-  private _config: WishFlowConfig = {
-    secretKey: '',
-    appId: '',
-    locale: DEFAULT_LOCALE,
-    userInfo: {
-      userId: undefined,
-    },
-    styles: defaultStyles as DefaultStyles,
-  }
+  private _config: WishFlowConfig = initialConfig
 
   private constructor() {}
 
@@ -43,22 +74,26 @@ class WishFlowSingleton {
     return WishFlowSingleton._instance
   }
 
-  public setConfig(config: WishFlowConfig): void {
+  public setConfig(config: SetWishFlowConfig) {
+    const theme = deepMerge(defaultTheme, config.theme)
+
     this._config = {
+      ...this._config,
       ...config,
-      styles: deepMerge(defaultStyles, config.styles),
-    }
+      theme,
+      styles: deepMerge(createDefaultStyles(theme), config.styles),
+    } as WishFlowConfig
   }
 
-  get config() {
-    if (!this._config.secretKey || !this._config.appId) {
-      throw new Error('WishFlow is not initialized')
-    }
+  public getConfig() {
+    return this._config
+  }
 
+  public get config() {
     return this._config
   }
 }
 
 export const WishFlow = WishFlowSingleton.getInstance()
 
-export const DEFAULT_LOCALE = 'en'
+export const config = WishFlow.getConfig()

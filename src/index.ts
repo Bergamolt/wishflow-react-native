@@ -1,2 +1,1 @@
-export { WishFlowContainer } from './components/WishFlowContainer'
-export { WishFlow } from './config'
+export { WishFlowProvider } from './context'

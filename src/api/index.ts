@@ -1,14 +1,12 @@
-import { Feature } from '../types'
+import { Feature, Vote } from '../types'
 import { API_BASE_URL } from '../constants'
 import { WishFlow } from '../config'
 
 const getHeaders = () => {
-  const { secretKey, appId } = WishFlow.config
-
   return {
     'Content-Type': 'application/json',
-    'x-app-secret-key': secretKey,
-    'x-app-id': appId,
+    'x-app-secret-key': WishFlow.config.secretKey,
+    'x-app-id': WishFlow.config.appId,
   }
 }
 
@@ -42,7 +40,9 @@ export const createFeature = async (
     throw new Error('Failed to create feature')
   }
 
-  return response.json()
+  const data = await response.json()
+
+  return data
 }
 
 export const voteFeature = async (featureId: string): Promise<void> => {
@@ -62,5 +62,25 @@ export const voteFeature = async (featureId: string): Promise<void> => {
     }
   } catch (error) {
     console.log(error)
+  }
+}
+
+export const fetchVotes = async (): Promise<Vote[]> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/features/voted`, {
+      method: 'GET',
+      headers: getHeaders(),
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch votes')
+    }
+
+    const data = await response.json()
+
+    return data.votes
+  } catch (err) {
+    console.error(err)
+    return []
   }
 }

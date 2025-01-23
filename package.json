@@ -24,7 +24,7 @@
     "example": "cd example && npm install && npm run start",
     "bootstrap": "npm run example && npm install",
     "format": "prettier --write .",
-    "wlp": "node scripts/wlp.js ./ ./example/node_modules/wishflow-react-native --ignorePaths=example,lib,node_modules"
+    "wlp": "node scripts/wlp.js ./ /Users/bergamolt/Projects/HabitFlowNew/node_modules/wishflow-react-native --ignorePaths=example,lib,node_modules"
   },
   "keywords": [
     "react-native",

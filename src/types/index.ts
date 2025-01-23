@@ -22,7 +22,47 @@ export type Feature = {
   updatedAt: string
 }
 
+export type Vote = {
+  featureId: string
+  userId: string
+  appId: string
+  createdAt: number
+}
+
+export type Theme = {
+  background: string
+  text: string
+  primary: string
+  secondary: string
+  success: string
+  error: string
+  warning: string
+  card: string
+  border: string
+  shadow: string
+  overlay: string
+}
+
 export type WishFlowConfig = {
+  secretKey: string
+  appId: string
+  locale: string
+  userInfo?: {
+    userId?: string
+  }
+  styles: Required<DefaultStyles>
+  statusColors: {
+    [key in FeatureStatus]: string
+  }
+  theme: Theme
+  components?: {
+    VoteButton?: {
+      customIcon?: React.ReactNode
+    }
+  }
+}
+
+export type SetWishFlowConfig = {
   secretKey: string
   appId: string
   locale?: string
@@ -30,18 +70,14 @@ export type WishFlowConfig = {
     userId?: string
   }
   styles?: DefaultStyles
-  customComponents?: {
-    VoteButton: {
+  statusColors?: {
+    [key in FeatureStatus]: string
+  }
+  theme?: Partial<Theme>
+  components?: {
+    VoteButton?: {
       customIcon?: React.ReactNode
     }
-  }
-}
-
-export type WishFlowContainerProps = {
-  theme?: {
-    primaryColor?: string
-    backgroundColor?: string
-    textColor?: string
   }
 }
 
@@ -64,6 +100,7 @@ export type AddFeatureModalProps = {
 }
 
 export type VoteButtonProps = {
+  isVoted: boolean
   votes: number
   onPress: () => void
 }

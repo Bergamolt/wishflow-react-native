@@ -2,7 +2,15 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "src/*": ["./src/*"]
+      "src/*": ["./src/*"],
+      "api/*": ["./src/api/*"],
+      "components/*": ["./src/components/*"],
+      "hooks/*": ["./src/hooks/*"],
+      "config/*": ["./src/config/*"],
+      "constants/*": ["./src/constants/*"],
+      "context/*": ["./src/context/*"],
+      "utils/*": ["./src/utils/*"],
+      "types/*": ["./src/types/*"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
