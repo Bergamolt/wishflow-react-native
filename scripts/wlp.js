@@ -47,6 +47,11 @@ async function copyEntirePackage() {
     console.log(`Source: ${sourcePackagePath}`)
     console.log(`Target: ${targetNodeModulesPath}`)
 
+    // Get package name from package.json
+    const packageJson = require(path.join(sourcePackagePath, 'package.json'))
+    const packageName = packageJson.name
+    const targetPackagePath = path.join(targetNodeModulesPath, packageName)
+
     // First, ensure temp directory exists and is empty
     await fs.emptyDir(tempDir)
     console.log('Temp directory emptied')
@@ -56,9 +61,10 @@ async function copyEntirePackage() {
     await copy(sourcePackagePath, tempDir)
     console.log('Copied to temp directory')
 
-    // Then copy from temp to target
+    // Then copy from temp to target package directory
     console.log('Copying to target directory...')
-    await copy(tempDir, targetNodeModulesPath)
+    await fs.ensureDir(targetPackagePath) // Ensure package directory exists
+    await copy(tempDir, targetPackagePath)
     console.log('Package fully copied to node_modules')
   } catch (err) {
     console.error('Error copying package:', err)
@@ -113,10 +119,14 @@ async function watchWithWatchman() {
     client.on('subscription', async (resp) => {
       if (resp.subscription !== 'mysubscription' || !resp.files?.length) return
 
+      const packageJson = require(path.join(sourcePackagePath, 'package.json'))
+      const packageName = packageJson.name
+      const targetPackagePath = path.join(targetNodeModulesPath, packageName)
+
       for (const file of resp.files) {
         const sourcePath = path.join(sourcePackagePath, file.name)
         const tempPath = path.join(tempDir, file.name)
-        const targetPath = path.join(targetNodeModulesPath, file.name)
+        const targetPath = path.join(targetPackagePath, file.name)
 
         try {
           if (file.exists) {

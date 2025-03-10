@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
-import { Feature, Vote } from '../types'
+import { Feature, FeatureFormData, UserInfo, Vote } from '../types'
 import { fetchFeatures, createFeature, voteFeature, fetchVotes } from '../api'
 import { WishFlow } from '../config'
 
@@ -7,78 +7,45 @@ export const useData = () => {
   const [features, setFeatures] = useState<Feature[]>([])
   const [votes, setVotes] = useState<Vote[]>([])
   const [loaded, setLoaded] = useState(false)
-  const { userInfo, appId, locale } = WishFlow.config
+  const { userInfo, appId } = WishFlow.config
 
   const loadFeatures = useCallback(async () => {
-    try {
-      const fetchedFeatures = await fetchFeatures(locale)
-      setFeatures(fetchedFeatures)
-    } catch (error) {
-      console.error('Error loading features:', error)
-    }
-  }, [locale])
+    setFeatures(await fetchFeatures(userInfo?.locale || 'en'))
+  }, [userInfo?.locale])
 
-  const addFeature = useCallback(
-    async (feature: Omit<Feature, 'id' | 'status' | 'votes' | 'createdAt' | 'updatedAt'>) => {
-      try {
-        const newFeature = await createFeature(feature)
-        setFeatures((prev) => [...prev, newFeature])
-        return newFeature
-      } catch (error) {
-        console.error('Error adding feature:', error)
-
-        throw error
-      }
-    },
-    [],
-  )
+  const addFeature = useCallback(async (feature: FeatureFormData, userInfo: UserInfo) => {
+    const newFeature = await createFeature({ feature, userInfo })
+    setFeatures((prev) => [...prev, newFeature])
+  }, [])
 
   const vote = useCallback(
     async (featureId: string) => {
-      try {
-        await voteFeature(featureId)
-
-        if (userInfo?.userId !== undefined) {
-          setFeatures((prev) =>
-            prev.map((feature) => (feature.id === featureId ? { ...feature, votes: feature.votes + 1 } : feature)),
-          )
-
-          const newVote = {
-            featureId,
-            userId: userInfo.userId,
-            appId,
-            createdAt: Date.now(),
-          }
-
-          setVotes((prev) => prev.concat(newVote))
-        }
-      } catch (error) {
-        console.error('Error voting for feature:', error)
-        throw error
+      if (!userInfo?.userId) {
+        throw new Error('User ID is not set')
       }
+
+      await voteFeature(featureId)
+
+      const newFeatures = features.map((feature) =>
+        feature.id === featureId ? { ...feature, votesCount: feature.votesCount + 1 } : feature,
+      )
+
+      setFeatures(newFeatures)
     },
-    [appId, userInfo?.userId],
+    [features, userInfo?.userId],
   )
 
   const loadVotes = useCallback(async () => {
-    try {
-      const allVotes = await fetchVotes()
-      setVotes(allVotes)
-    } catch (error) {
-      console.error('Error loading votes:', error)
-    }
+    setVotes(await fetchVotes())
   }, [])
 
-  const refresh = useCallback(() => {
-    loadVotes()
-    loadFeatures()
+  const refresh = useCallback(async () => {
+    await Promise.all([loadFeatures(), loadVotes()])
   }, [loadVotes, loadFeatures])
 
   useEffect(() => {
     const init = async () => {
-      await loadVotes()
-      await loadFeatures()
-
+      await Promise.all([loadFeatures(), loadVotes()])
       setLoaded(true)
     }
 

@@ -13,13 +13,13 @@ export type Feature = {
   id: string
   title: string
   description: string
-  email?: string
   status: FeatureStatus
-  votes: number
-  locale: string
+  votesCount: number
+  createdAt: number
+  updatedAt: number
+  appId: string
   userId: string
-  createdAt: string
-  updatedAt: string
+  locale: string
 }
 
 export type Vote = {
@@ -27,6 +27,17 @@ export type Vote = {
   userId: string
   appId: string
   createdAt: number
+}
+
+export type UserInfo = {
+  userId: string
+  email?: string
+  locale?: string
+}
+
+export type FeatureFormData = {
+  title: string
+  description: string
 }
 
 export type Theme = {
@@ -46,9 +57,10 @@ export type Theme = {
 export type WishFlowConfig = {
   secretKey: string
   appId: string
-  locale: string
   userInfo?: {
     userId?: string
+    email?: string
+    locale?: string
   }
   styles: Required<DefaultStyles>
   statusColors: {
@@ -82,21 +94,23 @@ export type SetWishFlowConfig = {
 }
 
 export type FeatureListProps = {
-  status: FeatureStatus | 'ALL'
   features: Feature[]
+  votes: Vote[]
+  status: FeatureStatus | 'ALL'
   loading: boolean
   onVote: (featureId: string) => Promise<void>
 }
 
 export type FeatureItemProps = {
   feature: Feature
+  votes: Vote[]
   onVote: (featureId: string) => void
 }
 
 export type AddFeatureModalProps = {
   isVisible: boolean
   onClose: () => void
-  onSubmit: (feature: Omit<Feature, 'id' | 'status' | 'votes' | 'createdAt' | 'updatedAt'>) => void
+  onSubmit: (feature: FeatureFormData, userInfo: UserInfo) => void
 }
 
 export type VoteButtonProps = {

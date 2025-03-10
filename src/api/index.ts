@@ -1,6 +1,17 @@
-import { Feature, Vote } from '../types'
-import { API_BASE_URL } from '../constants'
+import { Feature, FeatureFormData, UserInfo, Vote } from '../types'
+
 import { WishFlow } from '../config'
+
+export const API_URL = __DEV__ ? 'http://localhost:3000/api' : 'https://wishflow.dev/api'
+
+export const ENDPOINTS = {
+  FEATURES: `${API_URL}/features`,
+  FEATURE_CREATE: `${API_URL}/features/create`,
+  FEATURE_UPDATE: `${API_URL}/features/update`,
+  FEATURE_DELETE: `${API_URL}/features/delete`,
+  FEATURE_VOTE: `${API_URL}/features/vote`,
+  FEATURE_VOTES: `${API_URL}/features/votes`,
+}
 
 const getHeaders = () => {
   return {
@@ -10,77 +21,97 @@ const getHeaders = () => {
   }
 }
 
-export const fetchFeatures = async (locale: string): Promise<Feature[]> => {
-  const response = await fetch(`${API_BASE_URL}/features`, {
-    headers: getHeaders(),
-  })
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch features')
+const handleApiError = (error: unknown) => {
+  if (error instanceof Error) {
+    return error.message
   }
 
-  const data = await response.json()
-
-  // filter by locale
-  return data.filter((feature: Feature) => feature.locale === locale)
+  return 'Failed to create feature'
 }
 
-export const createFeature = async (
-  feature: Omit<Feature, 'id' | 'status' | 'votes' | 'createdAt' | 'updatedAt'>,
-): Promise<Feature> => {
-  const response = await fetch(`${API_BASE_URL}/features/create`, {
-    method: 'POST',
-    headers: getHeaders(),
-    body: JSON.stringify({
-      ...feature,
-    }),
-  })
+export const fetchFeatures = async (locale: string): Promise<Feature[]> => {
+  try {
+    const response = await fetch(ENDPOINTS.FEATURES, {
+      headers: getHeaders(),
+    })
 
-  if (!response.ok) {
-    throw new Error('Failed to create feature')
+    const parsedResponse = await response.json()
+
+    if (!response.ok) {
+      throw new Error(parsedResponse.error || 'Failed to fetch features')
+    }
+
+    return parsedResponse.data.filter((feature: Feature) => feature.locale === locale)
+  } catch (error) {
+    console.log(handleApiError(error))
+
+    return []
   }
+}
 
-  const data = await response.json()
+export const createFeature = async ({
+  feature,
+  userInfo,
+}: {
+  feature: FeatureFormData
+  userInfo: UserInfo
+}): Promise<Feature> => {
+  try {
+    const response = await fetch(ENDPOINTS.FEATURE_CREATE, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify({ ...feature, userInfo }),
+    })
 
-  return data
+    const parsedResponse = await response.json()
+
+    if (!response.ok) {
+      throw new Error(parsedResponse.error || 'Failed to create feature')
+    }
+
+    return parsedResponse.data
+  } catch (error) {
+    console.log(handleApiError(error))
+
+    return {} as Feature
+  }
 }
 
 export const voteFeature = async (featureId: string): Promise<void> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/features/${featureId}/vote`, {
+    const response = await fetch(ENDPOINTS.FEATURE_VOTE, {
       method: 'POST',
-      headers: {
-        ...getHeaders(),
-        ...(WishFlow.config.userInfo?.userId && { 'x-user-id': WishFlow.config.userInfo?.userId }),
-      },
+      headers: getHeaders(),
+      body: JSON.stringify({ featureId, userId: WishFlow.config.userInfo?.userId }),
     })
 
-    if (response.status !== 200) {
-      const data = await response.json()
+    const parsedResponse = await response.json()
 
-      console.log(data.error)
+    if (!response.ok) {
+      throw new Error(parsedResponse.error || 'Failed to create feature')
     }
   } catch (error) {
-    console.log(error)
+    console.log(handleApiError(error))
   }
 }
 
 export const fetchVotes = async (): Promise<Vote[]> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/features/voted`, {
-      method: 'GET',
+    const response = await fetch(ENDPOINTS.FEATURE_VOTES, {
+      method: 'POST',
       headers: getHeaders(),
+      body: JSON.stringify({ userId: WishFlow.config.userInfo?.userId }),
     })
 
+    const parsedResponse = await response.json()
+
     if (!response.ok) {
-      throw new Error('Failed to fetch votes')
+      throw new Error(parsedResponse.error || 'Failed to fetch votes')
     }
 
-    const data = await response.json()
-
-    return data.votes
-  } catch (err) {
-    console.error(err)
+    return parsedResponse.data
+  } catch (error) {
+    console.log(handleApiError(error))
     return []
   }
 }

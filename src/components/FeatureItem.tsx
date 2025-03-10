@@ -5,11 +5,9 @@ import { VoteButton } from './VoteButton'
 import { STATUS_TEXT } from '../constants'
 import { WishFlow } from '../config'
 import { Theme } from '../types'
-import { useWishFlow } from '../context'
 
-export const FeatureItem: React.FC<FeatureItemProps> = ({ feature, onVote }) => {
+export const FeatureItem: React.FC<FeatureItemProps> = ({ feature, votes, onVote }) => {
   const { userInfo } = WishFlow.config
-  const { votes } = useWishFlow()
 
   const isVoted = useMemo(() => {
     if (!votes) {
@@ -39,7 +37,7 @@ export const FeatureItem: React.FC<FeatureItemProps> = ({ feature, onVote }) => 
         </View>
       </View>
       <View style={WishFlow.config.styles.FeatureItem.votesContainer}>
-        <VoteButton votes={feature.votes} onPress={handleVote} isVoted={isVoted} />
+        <VoteButton votes={feature.votesCount} onPress={handleVote} isVoted={isVoted} />
       </View>
     </View>
   )

@@ -1,7 +1,5 @@
 import { FeatureStatus } from '../types'
 
-export const API_BASE_URL = __DEV__ ? 'http://localhost:3000/api' : 'https://wishflow.vercel.app/api'
-
 export const STORAGE_KEYS = {
   VOTED_FEATURES: '@wishflow/voted_features',
 }

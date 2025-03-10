@@ -4,8 +4,10 @@ import { Theme, VoteButtonProps } from '../types'
 import { WishFlow } from '../config'
 
 export const VoteButton: React.FC<VoteButtonProps> = ({ votes, onPress, isVoted }) => {
+  console.log('isVoted', isVoted)
+
   return (
-    <Pressable style={WishFlow.config.styles.VoteButton.container} onPress={onPress}>
+    <Pressable style={WishFlow.config.styles.VoteButton.container} onPress={onPress} disabled={isVoted}>
       {WishFlow.config.components?.VoteButton?.customIcon || (
         <Text style={[WishFlow.config.styles.VoteButton.icon, isVoted ? WishFlow.config.styles.VoteButton.voted : {}]}>
           ▲

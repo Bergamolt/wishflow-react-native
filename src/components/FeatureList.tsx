@@ -6,7 +6,7 @@ import { STATUS_TEXT } from '../constants'
 import { WishFlow } from '../config'
 import { useData } from '../hooks/useData'
 
-export const FeatureList: React.FC<FeatureListProps> = ({ status, features, onVote, loading }) => {
+export const FeatureList: React.FC<FeatureListProps> = ({ status, features, votes, onVote, loading }) => {
   const { refresh } = useData()
 
   if (loading) {
@@ -34,7 +34,7 @@ export const FeatureList: React.FC<FeatureListProps> = ({ status, features, onVo
       <FlatList
         data={features}
         keyExtractor={(item) => String(item.id)}
-        renderItem={({ item }) => <FeatureItem key={String(item.id)} feature={item} onVote={onVote} />}
+        renderItem={({ item }) => <FeatureItem key={String(item.id)} feature={item} votes={votes} onVote={onVote} />}
         contentContainerStyle={WishFlow.config.styles.FeatureList.listContainer}
         refreshing={loading}
         onRefresh={refresh}

@@ -1,6 +1,6 @@
 import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 import { FeatureStatus, WishFlowConfig, SetWishFlowConfig, Theme } from '../types'
-import { createWishFlowContainerStyles } from '../components/WishFlowContainer'
+import { createWishFlowContainerStyles } from '../components/Content'
 import { createAddFeatureModalStyles } from '../components/AddFeatureModal'
 import { createFeatureItemStyles } from '../components/FeatureItem'
 import { createFeatureListStyles } from '../components/FeatureList'
@@ -51,9 +51,10 @@ const defaultTheme: Theme = {
 export const initialConfig: WishFlowConfig = {
   secretKey: '',
   appId: '',
-  locale: DEFAULT_LOCALE,
   userInfo: {
     userId: undefined,
+    email: undefined,
+    locale: DEFAULT_LOCALE,
   },
   styles: createDefaultStyles(defaultTheme),
   statusColors: defaultStatusColors,

@@ -1,63 +1,153 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View, Text, TextInput, Pressable, Modal, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
+import { useForm, Controller } from 'react-hook-form'
 import { AddFeatureModalProps } from '../types'
 import { WishFlow } from '../config'
 import { Theme } from '../types'
 
+type FormData = {
+  title: string
+  description: string
+  email: string
+}
+
 export const AddFeatureModal: React.FC<AddFeatureModalProps> = ({ isVisible, onClose, onSubmit }) => {
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [email, setEmail] = useState('')
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>({
+    defaultValues: {
+      title: '',
+      description: '',
+      email: WishFlow.config.userInfo?.email || '',
+    },
+  })
 
-  const handleSubmit = () => {
-    if (!title.trim() || !description.trim()) return
+  const onSubmitForm = (data: FormData) => {
+    if (!WishFlow.config.userInfo?.userId) {
+      throw new Error('User info is not set')
+    }
 
-    onSubmit({
-      title: title.trim(),
-      description: description.trim(),
-      email: email.trim() || undefined,
-      locale: WishFlow.config.locale,
-      userId: WishFlow.config.userInfo?.userId || '',
-    })
-
-    setTitle('')
-    setDescription('')
-    setEmail('')
+    onSubmit(
+      {
+        title: data.title,
+        description: data.description,
+      },
+      {
+        userId: WishFlow.config.userInfo.userId,
+        email: data.email || WishFlow.config.userInfo.email,
+        locale: WishFlow.config.userInfo.locale,
+      },
+    )
+    reset()
     onClose()
   }
 
   return (
-    <Modal visible={isVisible} animationType='slide' transparent onRequestClose={onClose}>
+    <Modal visible={isVisible} animationType='slide' onRequestClose={onClose} transparent>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={WishFlow.config.styles.AddFeatureModal.modalContainer}>
         <View style={WishFlow.config.styles.AddFeatureModal.content}>
-          <>
-            <TextInput
-              style={WishFlow.config.styles.AddFeatureModal.input}
-              placeholder='Title'
-              value={title}
-              onChangeText={setTitle}
-              maxLength={100}
-            />
-            <TextInput
-              style={[WishFlow.config.styles.AddFeatureModal.input, WishFlow.config.styles.AddFeatureModal.textArea]}
-              placeholder='Description'
-              value={description}
-              onChangeText={setDescription}
-              multiline
-              numberOfLines={4}
-              maxLength={500}
-            />
-            <TextInput
-              style={WishFlow.config.styles.AddFeatureModal.input}
-              placeholder='Email (optional)'
-              value={email}
-              onChangeText={setEmail}
-              keyboardType='email-address'
-              autoCapitalize='none'
-            />
-          </>
+          <Controller
+            control={control}
+            name='title'
+            rules={{
+              required: 'Title is required',
+              minLength: {
+                value: 3,
+                message: 'Title must be at least 3 characters',
+              },
+              maxLength: {
+                value: 30,
+                message: 'Title must be less than 30 characters',
+              },
+            }}
+            render={({ field: { onChange, value } }) => (
+              <>
+                <TextInput
+                  style={[
+                    WishFlow.config.styles.AddFeatureModal.input,
+                    errors.title && WishFlow.config.styles.AddFeatureModal.inputError,
+                  ]}
+                  placeholder='Title'
+                  value={value}
+                  onChangeText={onChange}
+                  maxLength={30}
+                />
+                {errors.title && (
+                  <Text style={WishFlow.config.styles.AddFeatureModal.errorText}>{errors.title.message}</Text>
+                )}
+              </>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name='description'
+            rules={{
+              required: 'Description is required',
+              minLength: {
+                value: 30,
+                message: 'Description must be at least 10 characters',
+              },
+              maxLength: {
+                value: 300,
+                message: 'Description must be less than 300 characters',
+              },
+            }}
+            render={({ field: { onChange, value } }) => (
+              <>
+                <TextInput
+                  style={[
+                    WishFlow.config.styles.AddFeatureModal.input,
+                    WishFlow.config.styles.AddFeatureModal.textArea,
+                    errors.description && WishFlow.config.styles.AddFeatureModal.inputError,
+                  ]}
+                  placeholder='Description'
+                  value={value}
+                  onChangeText={onChange}
+                  multiline
+                  numberOfLines={4}
+                  maxLength={300}
+                />
+                {errors.description && (
+                  <Text style={WishFlow.config.styles.AddFeatureModal.errorText}>{errors.description.message}</Text>
+                )}
+              </>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name='email'
+            rules={{
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: 'Invalid email format',
+              },
+            }}
+            render={({ field: { onChange, value } }) => (
+              <>
+                <TextInput
+                  style={[
+                    WishFlow.config.styles.AddFeatureModal.input,
+                    errors.email && WishFlow.config.styles.AddFeatureModal.inputError,
+                  ]}
+                  placeholder='Email (optional)'
+                  value={value}
+                  onChangeText={onChange}
+                  keyboardType='email-address'
+                  autoCapitalize='none'
+                />
+                {errors.email && (
+                  <Text style={WishFlow.config.styles.AddFeatureModal.errorText}>{errors.email.message}</Text>
+                )}
+              </>
+            )}
+          />
 
           <View style={WishFlow.config.styles.AddFeatureModal.buttons}>
             <Pressable
@@ -79,8 +169,7 @@ export const AddFeatureModal: React.FC<AddFeatureModalProps> = ({ isVisible, onC
                 WishFlow.config.styles.AddFeatureModal.button,
                 WishFlow.config.styles.AddFeatureModal.submitButton,
               ]}
-              onPress={handleSubmit}
-              disabled={!title.trim() || !description.trim()}>
+              onPress={handleSubmit(onSubmitForm)}>
               <Text style={WishFlow.config.styles.AddFeatureModal.buttonText}>Submit</Text>
             </Pressable>
           </View>
@@ -149,6 +238,16 @@ export const createAddFeatureModalStyles = (theme: Theme) => {
       fontSize: 16,
       fontWeight: '600',
       textAlign: 'center',
+    },
+    inputError: {
+      borderColor: theme.error || '#ff0000',
+    },
+    errorText: {
+      color: theme.error || '#ff0000',
+      fontSize: 12,
+      marginTop: -12,
+      marginBottom: 12,
+      marginLeft: 4,
     },
   })
 }

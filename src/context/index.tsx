@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from 'react'
 import { WishFlowConfig } from '../types'
 import { WishFlow } from '../config'
-import { WishFlowContainer } from '../components/WishFlowContainer'
+import { Content } from '../components/Content'
 import { useData } from '../hooks/useData'
 
 type WishFlowContextType = ReturnType<typeof useData>
@@ -13,7 +13,7 @@ type WishFlowProviderProps = {
   config: WishFlowConfig
 }
 
-export const WishFlowProvider = ({ config }: WishFlowProviderProps) => {
+export const WishFlowProvider: React.FC<WishFlowProviderProps> = ({ config }) => {
   if (!config.secretKey || !config.appId) {
     throw new Error('WishFlow is not initialized')
   } else {
@@ -24,7 +24,7 @@ export const WishFlowProvider = ({ config }: WishFlowProviderProps) => {
 
   return (
     <WishFlowContext.Provider value={value}>
-      <WishFlowContainer />
+      <Content />
     </WishFlowContext.Provider>
   )
 }
